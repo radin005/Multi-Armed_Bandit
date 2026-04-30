@@ -1,0 +1,72 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+T = 1000
+k = 3
+mu = [0.2, 0.5, 0.9]
+behtarin_mu = max(mu)
+var = 1
+
+alpha = [1.0] * k
+beta = [1.0] * k
+regret_bernoulli = 0
+list_regret_bernoulli = []
+
+for t in range(T):
+    nemoone_ha = []
+    for i in range(k):
+        adad = np.random.beta(alpha[i], beta[i])
+        nemoone_ha.append(adad)
+    
+    entekhab = np.argmax(nemoone_ha)
+    
+    shans = np.random.random()
+    if shans < mu[entekhab]:
+        padash = 1
+    else:
+        padash = 0
+    
+    regret_bernoulli += (behtarin_mu - mu[entekhab])
+    list_regret_bernoulli.append(regret_bernoulli)
+    
+    if padash == 1:
+        alpha[entekhab] += 1
+    else:
+        beta[entekhab] += 1
+
+mu_hat = [0.0] * k
+varians_hat = [1.0] * k
+regret_gaussian = 0
+list_regret_gaussian = []
+
+for t in range(T):
+    nemoone_ha = []
+    for i in range(k):
+        adad = np.random.normal(mu_hat[i], np.sqrt(varians_hat[i]))
+        nemoone_ha.append(adad)
+    
+    entekhab = np.argmax(nemoone_ha)
+    
+    padosh = np.random.normal(mu[entekhab], np.sqrt(var))
+    
+    regret_gaussian += (behtarin_mu - mu[entekhab])
+    list_regret_gaussian.append(regret_gaussian)
+    
+    v_ghabli = varians_hat[entekhab]
+    m_ghabli = mu_hat[entekhab]
+    
+    varians_jadid = 1 / (1/v_ghabli + 1/var)
+    mu_jadid = varians_jadid * (m_ghabli/v_ghabli + padosh/var)
+    
+    varians_hat[entekhab] = varians_jadid
+    mu_hat[entekhab] = mu_jadid
+
+plt.plot(list_regret_bernoulli, label="Bernoulli")
+plt.plot(list_regret_gaussian, label="Gaussian")
+plt.xlabel('time step')
+plt.ylabel("Regret")
+plt.legend()
+plt.show()
+
+print(list_regret_bernoulli[-1])
+print(list_regret_gaussian[-1])
