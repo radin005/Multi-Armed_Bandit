@@ -1,0 +1,39 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+m = 0.7
+epsilon = 0.1
+N = 10000
+ns= [20, 50, 100, 500]
+
+Phat = [] 
+b_n_list = [] 
+print("n\t Phat\t b_n")
+
+for n in ns:
+    count = 0
+    for i in range(N):
+        samples = np.random.binomial(1, m, size=n)
+        Ybar = np.mean(samples)
+        if abs(Ybar - m) >= epsilon:
+            count = count + 1
+
+    p_hat = count / N
+    Phat.append(p_hat)
+    b_n = 2 * np.exp(-2 * n * (epsilon**2))
+    b_n_list.append(b_n) 
+    print(f"{n}\t {p_hat:.4f}\t {b_n:.4f}")
+
+print("Ybar:",Ybar)
+plt.plot(ns, Phat, label='p_hat')
+plt.plot(ns, b_n_list, 's-', label='Hoeffding')
+
+plt.title("Empirical Validation of Hoeffding's Inequality", fontsize=14)
+plt.xlabel("Sample Size (n)", fontsize=12)
+plt.ylabel("Probability / Upper Bound", fontsize=12)
+plt.legend(["Empirical Probability ($\hat{p}_n$)", "Hoeffding Bound ($b_n$)"])
+plt.grid(True, alpha=0.3)
+
+plt.legend()
+plt.grid(True)
+plt.show()
