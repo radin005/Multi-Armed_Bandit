@@ -1,0 +1,71 @@
+import numpy as np
+import random
+import matplotlib.pyplot as plt
+
+def get_reward(arm_number):
+    mus={1: 0.2, 2: 0.5, 3: 0.8}
+    p=mus[arm_number]
+    reward=np.random.binomial(n=1,p=p)
+    return reward
+
+def uniform_algorithm():
+    return random.choice([1,2,3])
+
+def greedy_algorithm(arm_rewards,arm_count,t):
+    if t<=3 and t>0:
+        return t
+    else:
+        averages={}
+        for arm in [1,2,3]:
+            averages[arm]=arm_rewards[arm]/arm_count[arm]
+            
+        highest_average=-1.0
+        for arm in averages:
+            if averages[arm]>highest_average:
+                highest_average=averages[arm]   
+                
+        best_arms=[]
+        for arm in averages:
+            if averages[arm]==highest_average:
+                best_arms.append(arm)
+        return random.choice(best_arms)
+
+mu_star=0.8
+N=500 
+t=1000 
+
+def average_regret_function(n_sims, t_steps, mu_max, algorithm_type):
+    final_regret=np.zeros(t_steps)
+    for n in range(n_sims):
+        arm_rewards={1:0.0, 2:0.0, 3:0.0} 
+        arm_count={1:0, 2:0, 3:0}
+        final_reward=0
+        
+        for i in range(1, t_steps + 1):
+            if algorithm_type=="uniform_algorithm":
+                chosen_arm=uniform_algorithm()
+            else:
+                chosen_arm=greedy_algorithm(arm_rewards,arm_count,i)
+                
+            chosen_arm_reward=get_reward(chosen_arm)
+            arm_rewards[chosen_arm]+=chosen_arm_reward
+            arm_count[chosen_arm]+=1
+            final_reward+=chosen_arm_reward
+
+            regret = i * mu_max - final_reward
+            final_regret[i-1]+=regret
+
+    return final_regret/n_sims
+
+uniform_average_regret=average_regret_function(N, t, mu_star, "uniform_algorithm")
+greedy_average_regret=average_regret_function(N, t, mu_star, "greedy_algorithm")
+
+plt.figure(figsize=(10, 6))
+plt.plot(range(1, t + 1), uniform_average_regret, label="Uniform Algorithm")
+plt.plot(range(1, t + 1), greedy_average_regret, label="Greedy Algorithm")
+plt.xlabel("t")
+plt.ylabel("Average Regret")
+plt.title("Comparison of Average Regret: Uniform vs Simple Greedy")
+plt.legend()
+plt.grid(True)
+plt.show()
