@@ -102,7 +102,7 @@
 - Microsecond Latency
     -Microsecond latency refers to reducing the network's Round-Trip Time (RTT) to less than a single millisecond, specifically aiming for around 100 microseconds. While 5G realized the dream of millisecond latency for commercial applications, 6G enters the microsecond realm to keep pace with the processing speeds of ultra-fast biological and mechanical systems. This feature is the ultimate key to instantaneous, real-time interactions in the world of machines and the Industrial Internet of Things (IIoT).
 
-    <img src="44354_2025_13_Fig1_HTML.png" alt="Alt text" width=400>
+    <img src="44354_2025_13_Fig1_HTML.png" alt="Alt text" width=600>
 
     - The key advantages of this negligible latency manifest in time-critical scenarios. In the smart factories of the future, synchronized robotic arms must react to assembly line errors within a fraction of a millisecond. Similarly, in remote robotic surgeries or the high-speed control of drone fleets, any latency beyond a few microseconds could result in catastrophe. This feature also unlocks the Haptic Internet, where the physical sense of touch must be transmitted and received across the network instantaneously without any perceptible lag.
 
@@ -117,7 +117,7 @@
 
 ### 2. Path Analysis
 
-<img src="75.png" alt="Alt text" width=400>
+<img src="75.png" alt="Alt text" width=1000>
 
 - From EPC to 5G
     - The migration journey begins with a fundamental transformation of the network's software paradigm. Before altering physical antennas, operators must overhaul the underlying operating environment. In this phase, massive, monolithic legacy telecom software systems are broken down and deployed as lightweight, containerized microservices (using platforms like Docker and Kubernetes) on commercial off-the-shelf (COTS) hardware. This cloud-native architecture provides the dynamic scalability required to manage future network generations.
